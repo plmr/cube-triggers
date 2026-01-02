@@ -1,0 +1,98 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Types of speedcubing algorithms"""
+enum AlgType {
+  CMLL
+  COLL
+  F2L
+  LSE
+  OLL
+  OTHER
+  PLL
+  ZBLL
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ImportRun {
+  endedAt: DateTime
+  errorMessage: String
+  id: ID!
+  processedAlgorithms: Int!
+  sourceId: String!
+  startedAt: DateTime!
+  status: ImportStatus!
+  totalAlgorithms: Int!
+}
+
+"""Status of algorithm import runs"""
+enum ImportStatus {
+  COMPLETED
+  FAILED
+  PENDING
+  PROCESSING
+}
+
+type Mutation {
+  startImport(input: StartImportInput!): ImportRun!
+}
+
+type Ngram {
+  createdAt: DateTime!
+  id: ID!
+  length: Int!
+  moves: String!
+}
+
+type NgramAggregate {
+  algType: AlgType
+  algorithmCoverage: Int!
+  id: ID!
+  ngramId: String!
+  sourceCoverage: Int!
+  sourceId: String
+  totalOccurrences: Int!
+  updatedAt: DateTime!
+}
+
+input NgramFilters {
+  algType: AlgType
+  length: Int
+  minOccurrences: Int
+  sourceId: String
+}
+
+type Query {
+  importRun(id: String!): ImportRun
+  importRuns(sourceId: String): [ImportRun!]!
+  ngramsByLength(length: Int!): [Ngram!]!
+  searchTriggers(moves: String!): [Ngram!]!
+  source(id: ID!): Source
+  sources: [Source!]!
+  topTriggers(filters: NgramFilters, limit: Int! = 50): [NgramAggregate!]!
+}
+
+type Source {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  updatedAt: DateTime!
+  url: String
+}
+
+input StartImportInput {
+  algorithmsText: String!
+  description: String
+  sourceName: String!
+  sourceUrl: String
+}
+
+type Subscription {
+  importProgress(importRunId: String!): ImportRun!
+}

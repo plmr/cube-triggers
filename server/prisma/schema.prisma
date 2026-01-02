@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Source {
+  id              String                @id @default(cuid())
+  name            String                @unique
+  description     String?
+  url             String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  occurrences     AlgorithmOccurrence[]
+  importRuns      ImportRun[]
+  ngramAggregates NgramAggregate[]
+
+  @@map("sources")
+}
+
+model ImportRun {
+  id                  String                @id @default(cuid())
+  sourceId            String
+  status              ImportStatus          @default(PENDING)
+  startedAt           DateTime              @default(now())
+  endedAt             DateTime?
+  totalAlgorithms     Int                   @default(0)
+  processedAlgorithms Int                   @default(0)
+  errorMessage        String?
+  occurrences         AlgorithmOccurrence[]
+  source              Source                @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@map("import_runs")
+}
+
+model Algorithm {
+  id               String                @id @default(cuid())
+  normalizedMoves  String                @unique
+  moveCount        Int
+  createdAt        DateTime              @default(now())
+  occurrences      AlgorithmOccurrence[]
+  ngramOccurrences NgramOccurrence[]
+
+  @@map("algorithms")
+}
+
+model AlgorithmOccurrence {
+  id            String    @id @default(cuid())
+  algorithmId   String
+  sourceId      String
+  importRunId   String
+  algType       AlgType
+  originalMoves String
+  caseName      String?
+  createdAt     DateTime  @default(now())
+  algorithm     Algorithm @relation(fields: [algorithmId], references: [id], onDelete: Cascade)
+  importRun     ImportRun @relation(fields: [importRunId], references: [id], onDelete: Cascade)
+  source        Source    @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([algorithmId, sourceId, importRunId])
+  @@map("algorithm_occurrences")
+}
+
+model Ngram {
+  id          String            @id @default(cuid())
+  moves       String            @unique
+  length      Int
+  createdAt   DateTime          @default(now())
+  aggregates  NgramAggregate[]
+  occurrences NgramOccurrence[]
+
+  @@index([length])
+  @@map("ngrams")
+}
+
+model NgramOccurrence {
+  id          String    @id @default(cuid())
+  ngramId     String
+  algorithmId String
+  position    Int
+  createdAt   DateTime  @default(now())
+  algorithm   Algorithm @relation(fields: [algorithmId], references: [id], onDelete: Cascade)
+  ngram       Ngram     @relation(fields: [ngramId], references: [id], onDelete: Cascade)
+
+  @@unique([ngramId, algorithmId, position])
+  @@map("ngram_occurrences")
+}
+
+model NgramAggregate {
+  id                String   @id @default(cuid())
+  ngramId           String
+  algType           AlgType?
+  sourceId          String?
+  totalOccurrences  Int      @default(0)
+  algorithmCoverage Int      @default(0)
+  sourceCoverage    Int      @default(0)
+  updatedAt         DateTime @updatedAt
+  ngram             Ngram    @relation(fields: [ngramId], references: [id], onDelete: Cascade)
+  source            Source?  @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([ngramId, algType, sourceId])
+  @@index([algType])
+  @@index([sourceId])
+  @@index([totalOccurrences])
+  @@index([algorithmCoverage])
+  @@map("ngram_aggregates")
+}
+
+enum AlgType {
+  F2L
+  OLL
+  PLL
+  CMLL
+  LSE
+  ZBLL
+  COLL
+  OTHER
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}

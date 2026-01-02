@@ -1,24 +1,64 @@
-# Nestjs specific
-/dist
-/node_modules
-/build
-/tmp
+# ----------------------
+# Node / pnpm
+# ----------------------
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
 
+# ----------------------
+# Build outputs
+# ----------------------
+dist/
+build/
+out/
+
+# ----------------------
+# Environment files
+# ----------------------
+.env
+.env.*
+!.env.example
+
+# ----------------------
+# Prisma
+# ----------------------
+server/prisma/migrations/
+server/prisma/dev.db
+server/prisma/dev.db-journal
+
+# ----------------------
 # Logs
-logs
-*.log
+# ----------------------
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+pnpm-debug.log*
+logs/
+*.log
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
+# ----------------------
+# OS / Editor
+# ----------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# temp directory
-.temp
-.tmp
+.vscode/
+!.vscode/extensions.json
+
+.idea/
+*.iml
+
+# ----------------------
+# Docker
+# ----------------------
+docker-data/
+**/docker-data/
+
+# ----------------------
+# Misc
+# ----------------------
+coverage/
+tmp/
+temp/

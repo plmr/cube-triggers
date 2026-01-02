@@ -1,0 +1,26 @@
+{
+  "name": "cube-triggers",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:server": "pnpm --filter server start:dev",
+
+    "build": "pnpm -r build",
+    "build:web": "pnpm --filter web build",
+    "build:server": "pnpm --filter server build",
+
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d",
+
+    "prisma:generate": "pnpm --filter server prisma generate",
+    "prisma:migrate": "pnpm --filter server prisma migrate dev",
+    "prisma:studio": "pnpm --filter server prisma studio"
+  }
+}
