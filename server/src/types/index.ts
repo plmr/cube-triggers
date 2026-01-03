@@ -6,3 +6,4 @@ export * from './import-run.type';
 export * from './algorithm-occurrence.type';
 export * from './ngram.type';
 export * from './ngram-aggregate.type';
+export * from './subscription.type';

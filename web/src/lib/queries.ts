@@ -85,3 +85,45 @@ export const GET_IMPORT_RUNS = gql`
     }
   }
 `;
+
+// Subscription for import progress updates
+export const IMPORT_PROGRESS_SUBSCRIPTION = gql`
+  subscription ImportProgress {
+    importProgress {
+      importRunId
+      totalAlgorithms
+      processedAlgorithms
+      currentAlgorithm
+      status
+      percentage
+      timestamp
+    }
+  }
+`;
+
+// Subscription for import completion
+export const IMPORT_COMPLETED_SUBSCRIPTION = gql`
+  subscription ImportCompleted {
+    importCompleted {
+      importRunId
+      totalAlgorithms
+      processedAlgorithms
+      newTriggersCount
+      duration
+      timestamp
+    }
+  }
+`;
+
+// Subscription for import failures
+export const IMPORT_FAILED_SUBSCRIPTION = gql`
+  subscription ImportFailed {
+    importFailed {
+      importRunId
+      message
+      processedAlgorithms
+      totalAlgorithms
+      timestamp
+    }
+  }
+`;

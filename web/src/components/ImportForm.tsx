@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { START_IMPORT, GET_SOURCES } from '../lib/queries';
+import { ImportProgress } from './ImportProgress';
 import './ImportForm.css';
 
 export function ImportForm() {
@@ -8,21 +9,19 @@ export function ImportForm() {
   const [sourceUrl, setSourceUrl] = useState('');
   const [description, setDescription] = useState('');
   const [algorithmsText, setAlgorithmsText] = useState('');
+  const [currentImportId, setCurrentImportId] = useState<string | null>(null);
 
   const [startImport, { loading, error }] = useMutation(START_IMPORT, {
     refetchQueries: [{ query: GET_SOURCES }], // Refresh sources list after import
     onCompleted: (data) => {
       console.log('Import started:', data.startImport);
-      alert(`Import started successfully! Processing ${data.startImport.totalAlgorithms} algorithms.`);
+      setCurrentImportId(data.startImport.id);
       
-      // Reset form
-      setSourceName('');
-      setSourceUrl('');
-      setDescription('');
-      setAlgorithmsText('');
+      // Don't reset form immediately - wait for completion
     },
     onError: (error) => {
       console.error('Import failed:', error);
+      setCurrentImportId(null);
     }
   });
 
@@ -114,19 +113,6 @@ T-Perm: R U R' F' R U R' U' R' F R2 U' R'"
           </div>
         </div>
 
-        {error && (
-          <div className="error-message" style={{
-            background: '#f8d7da',
-            border: '1px solid #f5c6cb',
-            color: '#721c24',
-            padding: '10px',
-            borderRadius: '4px',
-            marginBottom: '15px'
-          }}>
-            Error: {error.message}
-          </div>
-        )}
-
         <div className="form-actions">
           <button 
             type="submit" 
@@ -147,7 +133,39 @@ T-Perm: R U R' F' R U R' U' R' F R2 U' R'"
         </div>
       </form>
 
-      {loading && (
+      {/* Real-time import progress */}
+      {currentImportId && (
+        <ImportProgress
+          importRunId={currentImportId}
+          onComplete={() => {
+            // Reset form on completion
+            setSourceName('');
+            setSourceUrl('');
+            setDescription('');
+            setAlgorithmsText('');
+            setCurrentImportId(null);
+          }}
+          onError={(errorMsg) => {
+            console.error('Import failed:', errorMsg);
+            setCurrentImportId(null);
+          }}
+        />
+      )}
+
+      {error && !currentImportId && (
+        <div className="error-message" style={{
+          background: '#f8d7da',
+          border: '1px solid #f5c6cb',
+          color: '#721c24',
+          padding: '10px',
+          borderRadius: '4px',
+          marginTop: '20px'
+        }}>
+          Error: {error.message}
+        </div>
+      )}
+
+      {loading && !currentImportId && (
         <div className="import-status" style={{
           background: '#d1ecf1',
           border: '1px solid #bee5eb',
@@ -156,9 +174,8 @@ T-Perm: R U R' F' R U R' U' R' F R2 U' R'"
           borderRadius: '4px',
           marginTop: '20px'
         }}>
-          <p><strong>Import in progress...</strong></p>
-          <p>Your algorithms are being processed. This may take a few moments.</p>
-          <p>The new triggers will appear in the Triggers tab once processing is complete.</p>
+          <p><strong>Starting import...</strong></p>
+          <p>Preparing to process your algorithms...</p>
         </div>
       )}
     </div>

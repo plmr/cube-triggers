@@ -19,6 +19,33 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ImportCompletedPayload {
+  duration: Int!
+  importRunId: String!
+  newTriggersCount: Int!
+  processedAlgorithms: Int!
+  timestamp: String!
+  totalAlgorithms: Int!
+}
+
+type ImportFailedPayload {
+  importRunId: String!
+  message: String!
+  processedAlgorithms: Int!
+  timestamp: String!
+  totalAlgorithms: Int!
+}
+
+type ImportProgressPayload {
+  currentAlgorithm: String
+  importRunId: String!
+  percentage: Int!
+  processedAlgorithms: Int!
+  status: String!
+  timestamp: String!
+  totalAlgorithms: Int!
+}
+
 type ImportRun {
   endedAt: DateTime
   errorMessage: String
@@ -92,4 +119,10 @@ input StartImportInput {
   description: String
   sourceName: String!
   sourceUrl: String
+}
+
+type Subscription {
+  importCompleted: ImportCompletedPayload!
+  importFailed: ImportFailedPayload!
+  importProgress: ImportProgressPayload!
 }

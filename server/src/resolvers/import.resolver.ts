@@ -1,9 +1,14 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, Subscription } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
 import { ImportRun, ImportStatus } from '../types';
 import { PrismaService } from '../prisma';
-import { JobQueueService } from '../services';
+import { JobQueueService, SubscriptionService } from '../services';
 import { InputType, Field } from '@nestjs/graphql';
+import {
+  ImportProgressPayload,
+  ImportCompletedPayload,
+  ImportFailedPayload,
+} from '../types/subscription.type';
 
 /**
  * Input for starting an algorithm import
@@ -36,6 +41,7 @@ export class ImportResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jobQueue: JobQueueService,
+    private readonly subscriptionService: SubscriptionService,
   ) {}
 
   /**
@@ -110,5 +116,29 @@ export class ImportResolver {
       where,
       orderBy: { startedAt: 'desc' },
     });
+  }
+
+  /**
+   * Subscribe to import progress updates
+   */
+  @Subscription(() => ImportProgressPayload)
+  importProgress() {
+    return this.subscriptionService.subscribeToImportProgress();
+  }
+
+  /**
+   * Subscribe to import completion events
+   */
+  @Subscription(() => ImportCompletedPayload)
+  importCompleted() {
+    return this.subscriptionService.subscribeToImportCompleted();
+  }
+
+  /**
+   * Subscribe to import failure events
+   */
+  @Subscription(() => ImportFailedPayload)
+  importFailed() {
+    return this.subscriptionService.subscribeToImportFailed();
   }
 }

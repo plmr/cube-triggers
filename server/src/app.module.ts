@@ -12,7 +12,7 @@ import { SourceResolver } from './resolvers/source.resolver';
 import { NgramResolver } from './resolvers/ngram.resolver';
 import { ImportResolver } from './resolvers/import.resolver';
 // Import services
-import { AlgorithmParserService, JobQueueService } from './services';
+import { AlgorithmParserService, JobQueueService, SubscriptionService } from './services';
 // Import job processors
 import { ImportProcessor } from './jobs/processors/import-processor';
 import { AggregateProcessor } from './jobs/processors/aggregate-processor';
@@ -54,6 +54,13 @@ import { JOB_QUEUES } from './jobs/types';
       introspection: true,
       // Sort schema fields alphabetically for consistency
       sortSchema: true,
+      // Enable subscriptions for real-time updates
+      subscriptions: {
+        'graphql-ws': true,
+        'subscriptions-transport-ws': true,
+      },
+      // Install subscription handlers
+      installSubscriptionHandlers: true,
     }),
   ],
   providers: [
@@ -62,6 +69,7 @@ import { JOB_QUEUES } from './jobs/types';
     // Register services
     AlgorithmParserService,
     JobQueueService,
+    SubscriptionService,
     // Register job processors
     ImportProcessor,
     AggregateProcessor,

@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AlgorithmParserService } from '../../services/algorithm-parser.service';
+import { SubscriptionService } from '../../services/subscription.service';
 import { ProcessImportJobData, JOB_QUEUES } from '../types';
 import { ImportStatus } from '../../types/enums';
 import { AlgType } from '../../types/enums';
@@ -32,12 +33,14 @@ export class ImportProcessor extends WorkerHost {
   constructor(
     private readonly prisma: PrismaService,
     private readonly algorithmParser: AlgorithmParserService,
+    private readonly subscriptionService: SubscriptionService,
   ) {
     super();
   }
 
   async process(job: Job<ProcessImportJobData>): Promise<void> {
     const { importRunId, sourceId, algorithmsText } = job.data;
+    const startTime = Date.now();
 
     this.logger.log(`Processing import ${importRunId} from source ${sourceId}`);
 
@@ -49,6 +52,14 @@ export class ImportProcessor extends WorkerHost {
           status: ImportStatus.PROCESSING,
           processedAlgorithms: 0,
         },
+      });
+
+      // Publish initial progress
+      this.subscriptionService.publishImportProgress(importRunId, {
+        totalAlgorithms: 0,
+        processedAlgorithms: 0,
+        status: 'Parsing algorithms...',
+        percentage: 0,
       });
 
       // Parse algorithms from text
@@ -63,6 +74,14 @@ export class ImportProcessor extends WorkerHost {
         data: { totalAlgorithms: parsedAlgorithms.length },
       });
 
+      // Publish parsing complete
+      this.subscriptionService.publishImportProgress(importRunId, {
+        totalAlgorithms: parsedAlgorithms.length,
+        processedAlgorithms: 0,
+        status: 'Processing algorithms...',
+        percentage: 5,
+      });
+
       let processedCount = 0;
 
       // Process each algorithm
@@ -70,21 +89,31 @@ export class ImportProcessor extends WorkerHost {
         await this.processAlgorithm(importRunId, sourceId, parsed);
         processedCount++;
 
-        // Update progress every 10 algorithms
-        if (processedCount % 10 === 0) {
+        const percentage = Math.floor((processedCount / parsedAlgorithms.length) * 90) + 5; // 5-95%
+
+        // Update progress every 5 algorithms or on last algorithm
+        if (processedCount % 5 === 0 || processedCount === parsedAlgorithms.length) {
           await this.prisma.importRun.update({
             where: { id: importRunId },
             data: { processedAlgorithms: processedCount },
           });
 
           // Update job progress
-          await job.updateProgress(
-            (processedCount / parsedAlgorithms.length) * 100,
-          );
+          await job.updateProgress(percentage);
+
+          // Publish real-time progress
+          this.subscriptionService.publishImportProgress(importRunId, {
+            totalAlgorithms: parsedAlgorithms.length,
+            processedAlgorithms: processedCount,
+            currentAlgorithm: parsed.originalMoves,
+            status: `Processing algorithm ${processedCount}/${parsedAlgorithms.length}`,
+            percentage,
+          });
         }
       }
 
-      // Final update
+      // Final completion
+      const duration = Date.now() - startTime;
       await this.prisma.importRun.update({
         where: { id: importRunId },
         data: {
@@ -94,8 +123,16 @@ export class ImportProcessor extends WorkerHost {
         },
       });
 
+      // Publish completion
+      this.subscriptionService.publishImportCompleted(importRunId, {
+        totalAlgorithms: parsedAlgorithms.length,
+        processedAlgorithms: processedCount,
+        newTriggersCount: 0, // Will be updated by aggregate processor
+        duration,
+      });
+
       this.logger.log(
-        `Completed import ${importRunId}: processed ${processedCount} algorithms`,
+        `Completed import ${importRunId}: processed ${processedCount} algorithms in ${duration}ms`,
       );
 
       // TODO: Trigger aggregate computation job
@@ -105,6 +142,7 @@ export class ImportProcessor extends WorkerHost {
 
       const errorMessage =
         error instanceof Error ? error.message : String(error);
+      
       await this.prisma.importRun.update({
         where: { id: importRunId },
         data: {
@@ -112,6 +150,13 @@ export class ImportProcessor extends WorkerHost {
           errorMessage,
           endedAt: new Date(),
         },
+      });
+
+      // Publish failure
+      this.subscriptionService.publishImportFailed(importRunId, {
+        message: errorMessage,
+        processedAlgorithms: 0, // Could track this if needed
+        totalAlgorithms: 0,
       });
 
       throw error;

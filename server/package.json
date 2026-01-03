@@ -32,6 +32,8 @@
     "bullmq": "^5.66.4",
     "dotenv": "^17.2.3",
     "graphql": "^16.12.0",
+    "graphql-subscriptions": "^3.0.0",
+    "graphql-ws": "^6.0.6",
     "ioredis": "^5.8.2",
     "prisma": "5.22.0",
     "reflect-metadata": "^0.2.2",

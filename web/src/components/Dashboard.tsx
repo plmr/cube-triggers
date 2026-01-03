@@ -11,7 +11,7 @@ export function Dashboard() {
   const [filters, setFilters] = useState<FilterState>({});
 
   // Function to handle "View Triggers" from SourcesList
-  const handleViewTriggersBySource = (sourceId: string, sourceName: string) => {
+  const handleViewTriggersBySource = (sourceId: string, _sourceName: string) => {
     // Switch to triggers tab
     setActiveTab('triggers');
     // Set filter to show only triggers from this source
