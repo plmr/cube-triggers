@@ -1,0 +1,31 @@
+# JPerm Full PLL Algorithm Set
+# Source: https://jperm.net/algs/pll
+# Description: Complete set of 21 PLL (Permutation of Last Layer) algorithms from JPerm's website
+# This includes all standard PLL cases with proper case names and optimized algorithms
+# 
+# Format: Case Name: Algorithm
+# Comments start with # and are ignored during import
+#
+# Last updated: January 3, 2026
+
+PLL Aa-Perm: x L2 D2 (L' U' L) D2 (L' U L')
+PLL Ab-Perm: x' L2 D2 (L U L') D2 (L U' L)
+PLL E-Perm: x' (L' U L D') (L' U' L D) (L' U' L D') (L' U L D)
+PLL F-Perm: R' U' F' (R U R' U') R' F (R2 U' R' U') (R U R' U) R
+PLL Ga-Perm: (R2 U R' U) (R' U' R U') R2 (U' D) (R' U R) D'
+PLL Gb-Perm: (R' U' R) (U D') (R2 U R' U) (R U' R U') R2 D
+PLL Gc-Perm: (R2 U' R U') (R U R' U) R2 (U D') (R U' R') D
+PLL Gd-Perm: (R U R') (U' D) (R2 U' R U') (R' U R' U) R2 D'
+PLL H-Perm: M2 U M2 U2 M2 U M2
+PLL Ja-Perm: x (R2 F R F') R U2 (r' U r) U2
+PLL Jb-Perm: (R U R') F' (R U R' U') R' F (R2 U' R')
+PLL Na-Perm: (R U R' U) (R U R') F' (R U R' U') R' F (R2 U' R' U2) (R U' R')
+PLL Nb-Perm: r' D' F (r U' r') F' D (r2 U r' U') (r' F r F')
+PLL Ra-Perm: (R U' R' U') (R U R) D (R' U' R) D' (R' U2 R')
+PLL Rb-Perm: R2 F (R U R U') R' F' (R U2 R' U2) R
+PLL T-Perm: (R U R' U') R' F (R2 U' R' U') (R U R') F'
+PLL Ua-Perm: M2 U M U2 M' U M2
+PLL Ub-Perm: M2 U' M U2 M' U' M2
+PLL V-Perm: R U' (R U R') D R D' R (U' D) R2 U R2 D' R2
+PLL Y-Perm: F (R U' R' U') (R U R') F' (R U R' U') (R' F R F')
+PLL Z-Perm: M U M2 U M2 U M U2 M2 

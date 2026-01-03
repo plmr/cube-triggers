@@ -33,8 +33,14 @@ Case Name: Algorithm moves
 ### JPermFullOll.txt
 - **Source**: https://jperm.net/algs/oll
 - **Description**: Complete set of 57 OLL (Orientation of Last Layer) algorithms
-- **Cases**: OLL 1-57, plus some F2L and PLL algorithms
-- **Total Algorithms**: ~55 algorithms
+- **Cases**: OLL 1-57
+- **Total Algorithms**: 57 algorithms
+
+### JPermFullPll.txt
+- **Source**: https://jperm.net/algs/pll
+- **Description**: Complete set of 21 PLL (Permutation of Last Layer) algorithms
+- **Cases**: All standard PLL cases (Aa, Ab, E, F, Ga-Gd, H, Ja-Jb, Na-Nb, Ra-Rb, T, Ua-Ub, V, Y, Z)
+- **Total Algorithms**: 21 algorithms
 
 ## Adding New Algorithm Sets
 
