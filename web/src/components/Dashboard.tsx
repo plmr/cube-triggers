@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { SourcesList } from './SourcesList';
-import { ImportForm } from './ImportForm';
-import { TriggersList } from './TriggersList';
-import { TriggerFilters } from './TriggerFilters';
+import { SourcesList } from './SourcesList.tsx';
+import { ImportForm } from './ImportForm.tsx';
+import { TriggersList } from './TriggersList.tsx';
+import { TriggerFilters } from './TriggerFilters.tsx';
 import type { FilterState } from '../shared-types';
 import './Dashboard.css';
 
