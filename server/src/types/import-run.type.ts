@@ -33,7 +33,7 @@ export class ImportRun {
   // Relations will be added later
   // @Field(() => Source)
   // source: Source;
-  
+
   // @Field(() => [AlgorithmOccurrence])
   // occurrences: AlgorithmOccurrence[];
 }

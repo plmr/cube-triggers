@@ -25,7 +25,7 @@ export class StartImportInput {
 
 /**
  * Import Resolver - Handles algorithm ingestion
- * 
+ *
  * This resolver manages the import workflow:
  * - Starting imports (mutations)
  * - Querying import history
@@ -33,7 +33,6 @@ export class StartImportInput {
 @Resolver(() => ImportRun)
 @Injectable()
 export class ImportResolver {
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly jobQueue: JobQueueService,
@@ -41,13 +40,13 @@ export class ImportResolver {
 
   /**
    * Start importing algorithms from text
-   * 
+   *
    * @Mutation() creates GraphQL mutation fields (write operations)
    * This will trigger background processing
    */
   @Mutation(() => ImportRun)
   async startImport(
-    @Args('input') input: StartImportInput
+    @Args('input') input: StartImportInput,
   ): Promise<ImportRun> {
     // 1. Create or find Source
     const source = await this.prisma.source.upsert({
@@ -84,7 +83,7 @@ export class ImportResolver {
     await this.jobQueue.queueAggregateComputation({
       importRunId: importRun.id,
     });
-    
+
     return importRun;
   }
 
@@ -92,9 +91,7 @@ export class ImportResolver {
    * Get import run by ID
    */
   @Query(() => ImportRun, { nullable: true })
-  async importRun(
-    @Args('id') id: string
-  ): Promise<ImportRun | null> {
+  async importRun(@Args('id') id: string): Promise<ImportRun | null> {
     return this.prisma.importRun.findUnique({
       where: { id },
     });
@@ -105,10 +102,10 @@ export class ImportResolver {
    */
   @Query(() => [ImportRun])
   async importRuns(
-    @Args('sourceId', { nullable: true }) sourceId?: string
+    @Args('sourceId', { nullable: true }) sourceId?: string,
   ): Promise<ImportRun[]> {
     const where = sourceId ? { sourceId } : {};
-    
+
     return this.prisma.importRun.findMany({
       where,
       orderBy: { startedAt: 'desc' },

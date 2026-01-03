@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { join } from 'path';
 
@@ -25,25 +25,24 @@ import { JOB_QUEUES } from './jobs/types';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    
+
     // BullMQ setup
     BullModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         connection: {
           host: 'localhost',
           port: 6379,
           // Add Redis connection options if needed
         },
       }),
-      inject: [ConfigService],
     }),
-    
+
     // Register job queues
     BullModule.registerQueue(
       { name: JOB_QUEUES.IMPORT_PROCESSING },
       { name: JOB_QUEUES.AGGREGATE_COMPUTATION },
     ),
-    
+
     // GraphQL setup with code-first approach
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

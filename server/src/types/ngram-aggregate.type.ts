@@ -36,7 +36,7 @@ export class NgramAggregate {
   // Relations will be added later
   // @Field(() => Ngram)
   // ngram: Ngram;
-  
+
   // @Field(() => Source, { nullable: true })
   // source?: Source;
 }

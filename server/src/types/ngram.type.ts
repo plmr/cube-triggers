@@ -21,7 +21,7 @@ export class Ngram {
   // Relations will be added later
   // @Field(() => [NgramOccurrence])
   // occurrences: NgramOccurrence[];
-  
+
   // @Field(() => [NgramAggregate])
   // aggregates: NgramAggregate[];
 }
@@ -49,7 +49,7 @@ export class NgramOccurrence {
   // Relations will be added later
   // @Field(() => Ngram)
   // ngram: Ngram;
-  
+
   // @Field(() => Algorithm)
   // algorithm: Algorithm;
 }

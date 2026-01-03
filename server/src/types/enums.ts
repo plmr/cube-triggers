@@ -1,6 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql';
 // Import Prisma's generated enums
-import { AlgType as PrismaAlgType, ImportStatus as PrismaImportStatus } from '@prisma/client';
+import {
+  AlgType as PrismaAlgType,
+  ImportStatus as PrismaImportStatus,
+} from '@prisma/client';
 
 /**
  * Use Prisma's generated enums and register them with GraphQL
@@ -20,6 +23,6 @@ registerEnumType(AlgType, {
 });
 
 registerEnumType(ImportStatus, {
-  name: 'ImportStatus', 
+  name: 'ImportStatus',
   description: 'Status of algorithm import runs',
 });

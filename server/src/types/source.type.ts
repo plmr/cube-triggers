@@ -2,7 +2,7 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 /**
  * GraphQL Object Type for Source
- * 
+ *
  * @ObjectType() tells NestJS this class represents a GraphQL type
  * @Field() decorators specify which properties are exposed in the API
  */
@@ -29,7 +29,7 @@ export class Source {
   // Relations - we'll add these later when we create the other types
   // @Field(() => [ImportRun])
   // importRuns: ImportRun[];
-  
+
   // @Field(() => [AlgorithmOccurrence])
   // occurrences: AlgorithmOccurrence[];
 }

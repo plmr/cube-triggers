@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma';
 
 /**
  * Source Resolver
- * 
+ *
  * @Resolver() tells NestJS this class contains GraphQL resolvers
  * @Injectable() allows this class to receive injected dependencies
  * Each method with @Query() becomes a GraphQL query
@@ -13,7 +13,6 @@ import { PrismaService } from '../prisma';
 @Resolver(() => Source)
 @Injectable()
 export class SourceResolver {
-  
   /**
    * Constructor injection - NestJS automatically provides PrismaService
    */
@@ -21,7 +20,7 @@ export class SourceResolver {
 
   /**
    * Get all sources
-   * 
+   *
    * @Query() creates a GraphQL query field
    * Returns array of Source objects from the database
    */
@@ -34,13 +33,13 @@ export class SourceResolver {
 
   /**
    * Get a single source by ID
-   * 
+   *
    * @Args() defines query arguments
    * ID type is a special GraphQL scalar for unique identifiers
    */
   @Query(() => Source, { nullable: true })
   async source(
-    @Args('id', { type: () => ID }) id: string
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<Source | null> {
     return this.prisma.source.findUnique({
       where: { id },

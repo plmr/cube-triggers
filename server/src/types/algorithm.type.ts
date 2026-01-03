@@ -20,7 +20,7 @@ export class Algorithm {
   // Relations will be added later
   // @Field(() => [AlgorithmOccurrence])
   // occurrences: AlgorithmOccurrence[];
-  
+
   // @Field(() => [NgramOccurrence])
   // ngramOccurrences: NgramOccurrence[];
 }

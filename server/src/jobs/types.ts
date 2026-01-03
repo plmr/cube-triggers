@@ -24,6 +24,6 @@ export interface ComputeAggregatesJobData {
 // Job queue names
 export const JOB_QUEUES = {
   IMPORT_PROCESSING: 'import-processing',
-  ALGORITHM_PROCESSING: 'algorithm-processing', 
+  ALGORITHM_PROCESSING: 'algorithm-processing',
   AGGREGATE_COMPUTATION: 'aggregate-computation',
 } as const;

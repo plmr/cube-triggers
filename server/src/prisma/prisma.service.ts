@@ -3,13 +3,12 @@ import { PrismaClient } from '@prisma/client';
 
 /**
  * Prisma Service
- * 
+ *
  * @Injectable() makes this class available for dependency injection
  * OnModuleInit ensures we connect to the database when the module starts
  */
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-  
   constructor() {
     // Call parent constructor with empty options (required for Prisma v7)
     super({});

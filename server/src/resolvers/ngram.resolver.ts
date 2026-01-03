@@ -2,6 +2,7 @@ import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
 import { Ngram, NgramAggregate, AlgType } from '../types';
 import { PrismaService } from '../prisma';
+import { Prisma } from '@prisma/client';
 
 /**
  * Input type for filtering n-grams
@@ -26,7 +27,7 @@ export class NgramFilters {
 
 /**
  * N-gram Resolver - The heart of CubeTriggers
- * 
+ *
  * This resolver provides the core functionality:
  * - Finding the most common triggers
  * - Filtering by algorithm type, source, etc.
@@ -35,7 +36,6 @@ export class NgramFilters {
 @Resolver(() => Ngram)
 @Injectable()
 export class NgramResolver {
-
   constructor(private readonly prisma: PrismaService) {}
 
   /**
@@ -45,19 +45,19 @@ export class NgramResolver {
   @Query(() => [NgramAggregate])
   async topTriggers(
     @Args('filters', { nullable: true }) filters?: NgramFilters,
-    @Args('limit', { type: () => Int, defaultValue: 50 }) limit: number = 50
+    @Args('limit', { type: () => Int, defaultValue: 50 }) limit: number = 50,
   ): Promise<NgramAggregate[]> {
     // Build the where clause based on filters
-    const where: any = {};
-    
+    const where: Prisma.NgramAggregateWhereInput = {};
+
     if (filters?.algType) {
       where.algType = filters.algType;
     }
-    
+
     if (filters?.sourceId) {
       where.sourceId = filters.sourceId;
     }
-    
+
     if (filters?.minOccurrences) {
       where.totalOccurrences = {
         gte: filters.minOccurrences,
@@ -83,7 +83,7 @@ export class NgramResolver {
    */
   @Query(() => [Ngram])
   async ngramsByLength(
-    @Args('length', { type: () => Int }) length: number
+    @Args('length', { type: () => Int }) length: number,
   ): Promise<Ngram[]> {
     return this.prisma.ngram.findMany({
       where: { length },
@@ -95,9 +95,7 @@ export class NgramResolver {
    * Search for n-grams containing specific moves
    */
   @Query(() => [Ngram])
-  async searchTriggers(
-    @Args('moves') moves: string
-  ): Promise<Ngram[]> {
+  async searchTriggers(@Args('moves') moves: string): Promise<Ngram[]> {
     return this.prisma.ngram.findMany({
       where: {
         moves: {

@@ -34,10 +34,10 @@ export class AlgorithmOccurrence {
   // Relations will be added later
   // @Field(() => Algorithm)
   // algorithm: Algorithm;
-  
+
   // @Field(() => Source)
   // source: Source;
-  
+
   // @Field(() => ImportRun)
   // importRun: ImportRun;
 }
