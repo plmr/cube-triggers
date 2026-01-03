@@ -75,6 +75,9 @@ export class NgramResolver {
       where,
       orderBy: { totalOccurrences: 'desc' },
       take: limit,
+      include: {
+        ngram: true, // Include the ngram relation to get the moves
+      },
     });
   }
 

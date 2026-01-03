@@ -1,0 +1,115 @@
+.triggers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.triggers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trigger-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.loading,
+.error,
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+}
+
+.no-results p {
+  margin: 10px 0;
+}
+
+.triggers-table {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 50px 200px 100px 100px 80px 80px;
+  gap: 16px;
+  padding: 12px 16px;
+  align-items: center;
+}
+
+.table-header {
+  background: #f5f5f5;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-row {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.table-row:hover {
+  background: #f9f9f9;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.col-rank {
+  font-weight: 600;
+  color: #666;
+}
+
+.trigger-moves {
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #333;
+}
+
+.occurrence-count,
+.algorithm-count,
+.source-count {
+  font-weight: 600;
+  color: #007acc;
+}
+
+.alg-type {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 40px 150px 80px 80px 60px 60px;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .trigger-moves {
+    font-size: 12px;
+  }
+}

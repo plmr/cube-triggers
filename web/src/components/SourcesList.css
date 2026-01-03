@@ -1,0 +1,133 @@
+.sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sources-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.source-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.loading,
+.error,
+.no-sources {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+}
+
+.no-sources p {
+  margin: 10px 0;
+}
+
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.source-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: box-shadow 0.2s;
+}
+
+.source-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.source-name {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  flex: 1;
+}
+
+.source-date {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.source-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.source-url {
+  margin-bottom: 16px;
+}
+
+.source-url a {
+  color: #007acc;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.source-url a:hover {
+  text-decoration: underline;
+}
+
+.source-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.view-triggers-btn {
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.view-triggers-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sources-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .source-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .source-date {
+    margin-left: 0;
+  }
+}

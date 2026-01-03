@@ -147,6 +147,9 @@ describe('NgramResolver', () => {
         where: {},
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
       expect(result).toEqual(mockAggregates);
     });
@@ -174,6 +177,9 @@ describe('NgramResolver', () => {
         where: { algType: AlgType.PLL },
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
       expect(result).toEqual(mockAggregates);
     });
@@ -187,6 +193,9 @@ describe('NgramResolver', () => {
         where: { sourceId: 'source-1' },
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
     });
 
@@ -201,6 +210,9 @@ describe('NgramResolver', () => {
         },
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
     });
 
@@ -215,6 +227,9 @@ describe('NgramResolver', () => {
         },
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
     });
 
@@ -237,6 +252,9 @@ describe('NgramResolver', () => {
         },
         orderBy: { totalOccurrences: 'desc' },
         take: 50,
+        include: {
+          ngram: true,
+        },
       });
     });
 
@@ -247,6 +265,9 @@ describe('NgramResolver', () => {
         where: {},
         orderBy: { totalOccurrences: 'desc' },
         take: 10,
+        include: {
+          ngram: true,
+        },
       });
     });
 

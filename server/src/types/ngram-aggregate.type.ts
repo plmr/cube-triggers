@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { AlgType } from './enums';
+import { Ngram } from './ngram.type';
 
 /**
  * Materialized aggregates for fast querying
@@ -33,9 +34,9 @@ export class NgramAggregate {
   @Field(() => Date)
   updatedAt: Date;
 
-  // Relations will be added later
-  // @Field(() => Ngram)
-  // ngram: Ngram;
+  // Relations
+  @Field(() => Ngram)
+  ngram: Ngram;
 
   // @Field(() => Source, { nullable: true })
   // source?: Source;

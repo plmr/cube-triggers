@@ -1,0 +1,168 @@
+.import-form-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.import-form-section,
+.import-history-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.import-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+}
+
+.form-help {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submit-button {
+  padding: 12px 24px;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #005a9e;
+}
+
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.import-runs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.import-run {
+  background: white;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.run-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-badge.processing {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-badge.completed {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.status-badge.failed {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.run-progress {
+  font-size: 12px;
+  color: #666;
+}
+
+.run-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.run-error {
+  margin-top: 8px;
+  padding: 8px;
+  background: #ffebee;
+  color: #d32f2f;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.loading,
+.no-imports {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .import-form-container {
+    grid-template-columns: 1fr;
+  }
+}

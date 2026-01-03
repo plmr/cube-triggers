@@ -53,6 +53,7 @@ type NgramAggregate {
   algType: AlgType
   algorithmCoverage: Int!
   id: ID!
+  ngram: Ngram!
   ngramId: String!
   sourceCoverage: Int!
   sourceId: String
