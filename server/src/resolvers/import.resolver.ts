@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Subscription, Query } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
 import { ImportRun, ImportStatus } from '../types';
 import { PrismaService } from '../prisma';
@@ -28,7 +28,6 @@ export class StartImportInput {
  * 
  * This resolver manages the import workflow:
  * - Starting imports (mutations)
- * - Tracking progress (subscriptions)
  * - Querying import history
  */
 @Resolver(() => ImportRun)
@@ -114,20 +113,5 @@ export class ImportResolver {
       where,
       orderBy: { startedAt: 'desc' },
     });
-  }
-
-  /**
-   * Real-time updates for import progress
-   * 
-   * @Subscription() creates GraphQL subscription fields (real-time)
-   * Clients can subscribe to get live updates as imports progress
-   */
-  @Subscription(() => ImportRun)
-  async importProgress(
-    @Args('importRunId') importRunId: string
-  ) {
-    // TODO: Implement with Redis pub/sub
-    // This will emit updates as the background job processes algorithms
-    throw new Error('Subscriptions not implemented yet - will add with BullMQ');
   }
 }

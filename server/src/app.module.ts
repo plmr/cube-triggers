@@ -4,8 +4,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 // Import Prisma service
 import { PrismaService } from './prisma';
@@ -55,17 +53,11 @@ import { JOB_QUEUES } from './jobs/types';
       playground: true,
       // Enable introspection (needed for Playground)
       introspection: true,
-      // Enable subscriptions for real-time updates
-      subscriptions: {
-        'graphql-ws': true,
-      },
       // Sort schema fields alphabetically for consistency
       sortSchema: true,
     }),
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     // Register Prisma service
     PrismaService,
     // Register services

@@ -92,7 +92,3 @@ input StartImportInput {
   sourceName: String!
   sourceUrl: String
 }
-
-type Subscription {
-  importProgress(importRunId: String!): ImportRun!
-}
