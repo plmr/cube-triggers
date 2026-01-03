@@ -22,13 +22,18 @@ export class AlgorithmParserService {
   parseAlgorithmsText(text: string): ParsedAlgorithm[] {
     const algorithms: ParsedAlgorithm[] = [];
 
-    // Split by lines and filter out empty lines
+    // Split by lines and filter out empty lines and comments
     const lines = text
       .split('\n')
       .map((line) => line.trim())
       .filter(
         (line) =>
-          line.length > 0 && !line.startsWith('#') && !line.startsWith('//'),
+          line.length > 0 && 
+          !line.startsWith('#') && 
+          !line.startsWith('//') &&
+          !line.startsWith('/*') &&
+          !line.startsWith('*') &&
+          !line.startsWith('<!--'),
       );
 
     for (const line of lines) {
