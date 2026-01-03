@@ -134,6 +134,11 @@ export class AlgorithmParserService {
       return AlgType.F2L;
     }
 
+    // COLL patterns (check before OLL since COLL contains 'oll')
+    if (name.includes('coll')) {
+      return AlgType.COLL;
+    }
+
     // OLL patterns
     if (name.includes('oll') || name.includes('orientation')) {
       return AlgType.OLL;
@@ -164,11 +169,6 @@ export class AlgorithmParserService {
     // ZBLL patterns
     if (name.includes('zbll')) {
       return AlgType.ZBLL;
-    }
-
-    // COLL patterns
-    if (name.includes('coll')) {
-      return AlgType.COLL;
     }
 
     return AlgType.OTHER;
