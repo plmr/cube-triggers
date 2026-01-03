@@ -50,31 +50,47 @@ export class NgramResolver {
     // Build the where clause based on filters
     const where: Prisma.NgramAggregateWhereInput = {};
 
-    // If no specific filters are provided, default to global aggregates
-    // (where both algType and sourceId are null)
-    if (!filters || (!filters.algType && !filters.sourceId)) {
+    // Handle algType and sourceId filtering properly
+    if (filters?.algType && filters?.sourceId) {
+      // Both algType and sourceId specified - use specific aggregate
+      where.algType = filters.algType;
+      where.sourceId = filters.sourceId;
+    } else if (filters?.algType) {
+      // Only algType specified - use algType-specific aggregates (sourceId = null)
+      where.algType = filters.algType;
+      where.sourceId = null;
+    } else if (filters?.sourceId) {
+      // Only sourceId specified - use source-specific aggregates (algType = null)
+      where.algType = null;
+      where.sourceId = filters.sourceId;
+    } else {
+      // No algType or sourceId filters - use global aggregates
       where.algType = null;
       where.sourceId = null;
-    } else {
-      // Apply specific filters if provided
-      if (filters.algType) {
-        where.algType = filters.algType;
-      }
-      if (filters.sourceId) {
-        where.sourceId = filters.sourceId;
-      }
     }
 
+    // Apply minimum occurrences filter
     if (filters?.minOccurrences) {
       where.totalOccurrences = {
         gte: filters.minOccurrences,
       };
     }
 
-    // If length filter is provided, we need to join with ngrams table
+    // Apply length filter by joining with ngrams table
     if (filters?.length) {
       where.ngram = {
         length: filters.length,
+      };
+    }
+
+    // Add a filter to exclude aggregates with 0 occurrences
+    // (these shouldn't exist, but just in case)
+    if (!where.totalOccurrences) {
+      where.totalOccurrences = { gt: 0 };
+    } else {
+      // If minOccurrences is already set, make sure it's at least 1
+      where.totalOccurrences = {
+        gte: Math.max(filters?.minOccurrences || 1, 1),
       };
     }
 

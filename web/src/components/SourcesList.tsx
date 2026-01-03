@@ -3,7 +3,11 @@ import { GET_SOURCES } from '../lib/queries';
 import type { Source } from '../shared-types';
 import './SourcesList.css';
 
-export function SourcesList() {
+interface SourcesListProps {
+  onViewTriggers: (sourceId: string, sourceName: string) => void;
+}
+
+export function SourcesList({ onViewTriggers }: SourcesListProps) {
   const { loading, error, data } = useQuery<{ sources: Source[] }>(GET_SOURCES);
 
   // Fallback to mock data if GraphQL fails
@@ -80,13 +84,7 @@ export function SourcesList() {
             <div className="source-actions">
               <button 
                 className="view-triggers-btn"
-                onClick={() => {
-                  // Switch to triggers tab and filter by this source
-                  // We need to pass this up to the Dashboard component
-                  console.log('Filter by source:', source.id);
-                  // TODO: Implement source filtering
-                  alert(`Filtering by source "${source.name}" - This will be implemented next!`);
-                }}
+                onClick={() => onViewTriggers(source.id, source.name)}
               >
                 View Triggers
               </button>

@@ -10,6 +10,14 @@ export function Dashboard() {
   const [activeTab, setActiveTab] = useState<'triggers' | 'import' | 'sources'>('triggers');
   const [filters, setFilters] = useState<FilterState>({});
 
+  // Function to handle "View Triggers" from SourcesList
+  const handleViewTriggersBySource = (sourceId: string, sourceName: string) => {
+    // Switch to triggers tab
+    setActiveTab('triggers');
+    // Set filter to show only triggers from this source
+    setFilters({ sourceId });
+  };
+
   return (
     <div className="dashboard">
       <nav className="dashboard-nav">
@@ -57,7 +65,7 @@ export function Dashboard() {
         {activeTab === 'sources' && (
           <div className="sources-view">
             <h2>Algorithm Sources</h2>
-            <SourcesList />
+            <SourcesList onViewTriggers={handleViewTriggersBySource} />
           </div>
         )}
       </div>

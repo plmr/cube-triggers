@@ -1,3 +1,5 @@
+import { useQuery } from '@apollo/client';
+import { GET_SOURCES } from '../lib/queries';
 import type { FilterState } from '../shared-types';
 import './TriggerFilters.css';
 
@@ -28,6 +30,10 @@ const LENGTHS = [
 ];
 
 export function TriggerFilters({ filters, onFiltersChange }: TriggerFiltersProps) {
+  // Fetch sources for the source dropdown
+  const { data: sourcesData } = useQuery(GET_SOURCES);
+  const sources = sourcesData?.sources || [];
+
   const updateFilter = (key: keyof FilterState, value: string | number | undefined) => {
     onFiltersChange({
       ...filters,
@@ -47,6 +53,22 @@ export function TriggerFilters({ filters, onFiltersChange }: TriggerFiltersProps
           {ALG_TYPES.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label htmlFor="sourceId">Source</label>
+        <select
+          id="sourceId"
+          value={filters.sourceId || ''}
+          onChange={(e) => updateFilter('sourceId', e.target.value)}
+        >
+          <option value="">All Sources</option>
+          {sources.map((source: any) => (
+            <option key={source.id} value={source.id}>
+              {source.name}
             </option>
           ))}
         </select>
