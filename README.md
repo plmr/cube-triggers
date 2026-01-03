@@ -70,14 +70,17 @@ CubeTriggers is intentionally built as **two tightly-coupled applications in a s
 ### Monorepo Structure
 ```
 cube-triggers/
-  server/   # Backend API and analysis engine
-  web/      # Frontend GUI
+  server/         # Backend API and analysis engine
+  web/            # Frontend GUI
+  algorithm-sets/ # Curated algorithm collections for import
 ```
 
 They live together because:
 - the GraphQL schema is a shared contract
 - backend and frontend evolve together
 - local development is simpler and faster
+
+The `algorithm-sets/` directory contains curated algorithm collections with proper formatting and documentation for easy import and analysis.
 
 ---
 
