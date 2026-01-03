@@ -84,8 +84,8 @@ export class AlgorithmParserService {
    * Check if text contains actual cube moves
    */
   private containsMoves(text: string): boolean {
-    // Check for cube notation including lowercase wide moves
-    const movePattern = /[RLUDFBMESrludfbmes][w]?[2']?/;
+    // Basic check for cube notation
+    const movePattern = /[RLUDFBMES][w]?[2']?/;
     return movePattern.test(text);
   }
 
@@ -95,27 +95,10 @@ export class AlgorithmParserService {
   private normalizeMoves(moves: string): string {
     return (
       moves
-        // Remove all parentheses
-        .replace(/[()]/g, '')
-        // Remove extra whitespace and normalize spaces
+        // Remove extra whitespace
         .replace(/\s+/g, ' ')
         .trim()
-        // Convert lowercase wide moves to uppercase with 'w' notation
-        // Handle single lowercase letters (r -> Rw, l -> Lw, etc.)
-        .replace(/\b([rludfbmes])\b/g, (match, letter) => {
-          const upperLetter = letter.toUpperCase();
-          // For slice moves (M, E, S), keep as-is
-          if (['M', 'E', 'S'].includes(upperLetter)) {
-            return upperLetter;
-          }
-          // For face moves, convert to wide notation
-          return upperLetter + 'w';
-        })
-        // Handle lowercase letters with modifiers (r', r2, etc.)
-        .replace(/\b([rludfb])([2'])/g, (match, letter, modifier) => {
-          return letter.toUpperCase() + 'w' + modifier;
-        })
-        // Normalize existing wide moves to consistent format
+        // Normalize wide moves to 'w' notation
         .replace(/([RLUDFB])w/g, '$1w')
         // Normalize double moves
         .replace(/([RLUDFBMES][w]?)2/g, '$12')
@@ -123,8 +106,6 @@ export class AlgorithmParserService {
         .replace(/([RLUDFBMES][w]?)'/g, "$1'")
         // Remove rotation moves for now (x, y, z)
         .replace(/[xyz][2']?\s*/g, '')
-        // Clean up any double spaces that might have been created
-        .replace(/\s+/g, ' ')
         .trim()
     );
   }
