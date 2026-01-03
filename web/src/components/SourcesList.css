@@ -11,8 +11,9 @@
 }
 
 .source-count {
-  color: #666;
+  color: #333;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .loading,
@@ -103,8 +104,9 @@
 
 .view-triggers-btn {
   padding: 8px 16px;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
+  background: #007acc;
+  color: white;
+  border: 1px solid #007acc;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
@@ -112,7 +114,8 @@
 }
 
 .view-triggers-btn:hover {
-  background: #e0e0e0;
+  background: #005a9e;
+  border-color: #005a9e;
 }
 
 /* Responsive design */

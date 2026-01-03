@@ -11,8 +11,9 @@
 }
 
 .trigger-count {
-  color: #666;
+  color: #333;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .loading,
@@ -31,12 +32,14 @@
 
 .no-results p {
   margin: 10px 0;
+  color: #666;
 }
 
 .triggers-table {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
+  background: white;
 }
 
 .table-header,
@@ -59,6 +62,7 @@
 .table-row {
   border-bottom: 1px solid #f0f0f0;
   transition: background-color 0.2s;
+  background: white;
 }
 
 .table-row:hover {

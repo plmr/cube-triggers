@@ -50,12 +50,19 @@ export class NgramResolver {
     // Build the where clause based on filters
     const where: Prisma.NgramAggregateWhereInput = {};
 
-    if (filters?.algType) {
-      where.algType = filters.algType;
-    }
-
-    if (filters?.sourceId) {
-      where.sourceId = filters.sourceId;
+    // If no specific filters are provided, default to global aggregates
+    // (where both algType and sourceId are null)
+    if (!filters || (!filters.algType && !filters.sourceId)) {
+      where.algType = null;
+      where.sourceId = null;
+    } else {
+      // Apply specific filters if provided
+      if (filters.algType) {
+        where.algType = filters.algType;
+      }
+      if (filters.sourceId) {
+        where.sourceId = filters.sourceId;
+      }
     }
 
     if (filters?.minOccurrences) {

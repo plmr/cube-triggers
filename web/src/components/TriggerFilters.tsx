@@ -1,4 +1,4 @@
-import { FilterState } from './Dashboard';
+import type { FilterState } from '../shared-types';
 import './TriggerFilters.css';
 
 interface TriggerFiltersProps {

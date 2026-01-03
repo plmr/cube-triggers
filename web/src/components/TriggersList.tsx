@@ -1,25 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { GET_TOP_TRIGGERS } from '../lib/queries';
-import { FilterState } from './Dashboard';
+import type { FilterState, NgramAggregate } from '../shared-types';
 import './TriggersList.css';
 
 interface TriggersListProps {
   filters: FilterState;
-}
-
-interface NgramAggregate {
-  id: string;
-  totalOccurrences: number;
-  algorithmCoverage: number;
-  sourceCoverage: number;
-  algType?: string;
-  sourceId?: string;
-  updatedAt: string;
-  ngram: {
-    id: string;
-    moves: string;
-    length: number;
-  };
 }
 
 export function TriggersList({ filters }: TriggersListProps) {
@@ -30,10 +15,57 @@ export function TriggersList({ filters }: TriggersListProps) {
     },
   });
 
-  if (loading) return <div className="loading">Loading triggers...</div>;
-  if (error) return <div className="error">Error: {error.message}</div>;
+  // Fallback mock data
+  const mockTriggers: NgramAggregate[] = [
+    {
+      id: '1',
+      totalOccurrences: 15,
+      algorithmCoverage: 8,
+      sourceCoverage: 3,
+      algType: 'F2L',
+      updatedAt: new Date().toISOString(),
+      ngram: {
+        id: '1',
+        moves: "R U R' U'",
+        length: 4
+      }
+    },
+    {
+      id: '2', 
+      totalOccurrences: 12,
+      algorithmCoverage: 6,
+      sourceCoverage: 2,
+      algType: 'OLL',
+      updatedAt: new Date().toISOString(),
+      ngram: {
+        id: '2',
+        moves: "R U2 R' U'",
+        length: 4
+      }
+    },
+    {
+      id: '3',
+      totalOccurrences: 8,
+      algorithmCoverage: 4,
+      sourceCoverage: 2,
+      algType: 'PLL',
+      updatedAt: new Date().toISOString(),
+      ngram: {
+        id: '3',
+        moves: "R' U' R U'",
+        length: 4
+      }
+    }
+  ];
 
-  const triggers = data?.topTriggers || [];
+  // Use real data if available, otherwise fall back to mock data
+  const triggers = data?.topTriggers || mockTriggers;
+
+  if (loading) return <div className="loading">Loading triggers...</div>;
+
+  if (error) {
+    console.warn('GraphQL error, using mock data:', error);
+  }
 
   if (triggers.length === 0) {
     return (
@@ -46,9 +78,27 @@ export function TriggersList({ filters }: TriggersListProps) {
 
   return (
     <div className="triggers-list">
+      {error && (
+        <div className="connection-warning" style={{ 
+          background: '#fff3cd', 
+          border: '1px solid #ffeaa7', 
+          padding: '10px', 
+          borderRadius: '4px', 
+          marginBottom: '20px',
+          fontSize: '14px'
+        }}>
+          ⚠️ Using sample data (GraphQL connection failed)
+        </div>
+      )}
+
       <div className="triggers-header">
         <div className="trigger-count">
           Found {triggers.length} triggers
+          {data?.topTriggers && (
+            <span style={{ color: '#28a745', marginLeft: '10px' }}>
+              ✓ Live data
+            </span>
+          )}
         </div>
       </div>
 

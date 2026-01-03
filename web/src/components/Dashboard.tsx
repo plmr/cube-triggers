@@ -3,14 +3,8 @@ import { SourcesList } from './SourcesList';
 import { ImportForm } from './ImportForm';
 import { TriggersList } from './TriggersList';
 import { TriggerFilters } from './TriggerFilters';
+import type { FilterState } from '../shared-types';
 import './Dashboard.css';
-
-export interface FilterState {
-  algType?: string;
-  sourceId?: string;
-  length?: number;
-  minOccurrences?: number;
-}
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState<'triggers' | 'import' | 'sources'>('triggers');
